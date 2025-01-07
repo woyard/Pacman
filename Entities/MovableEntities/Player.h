@@ -6,7 +6,7 @@ class Player : public MovableEntity {
 private:
     int m_score = 0;
     int m_eatenPellets = 0;
-    int m_lives = 3;
+    int m_lives = 15;
     int m_powerUpTimer = 0;
     bool m_isGhosted = false;
 public:
@@ -24,6 +24,7 @@ public:
     int getPowerUpTimer() const { return m_powerUpTimer; }
     bool getIsGhosted() const { return m_isGhosted; }
 
+    void setGameData(int score, int lives) {m_score = score; m_lives = lives;}
     void resetGhosted() { m_isGhosted = false; }
     void tickPowerUpTimer() { m_powerUpTimer = std::max(0, m_powerUpTimer - 1); }
 

@@ -68,4 +68,15 @@ public:
     QGraphicsScene* buildScene();
 
     QGraphicsView* buildView(QGraphicsScene *scene);
+
+    class MissingPlayerException : public std::exception {
+    public:
+        explicit MissingPlayerException(QString  message) : m_message(std::move(message)) {}
+        const char* what() const noexcept override {
+            return m_message.toUtf8().constData();
+        }
+    private:
+        QString m_message;
+    };
 };
+
