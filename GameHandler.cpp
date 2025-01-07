@@ -1,4 +1,5 @@
 #include <qcoreapplication.h>
+#include <QRandomGenerator>
 #include "GameHandler.h"
 #include "Entities/MovableEntities/Ghosts/Blinky.h"
 #include "Entities/MovableEntities/Ghosts/Pinky.h"
@@ -23,7 +24,7 @@ void GameHandler::loadLevel() {
                     m_movableEntities.addEntity(m_player = new Player(pos, m_tileSize));
                     break;
                 case BLINKY_CHAR:
-                        m_movableEntities.addEntity(addGhostReturn(m_ghosts, new Blinky(pos, m_tileSize, m_pathFinder)));
+                    m_movableEntities.addEntity(addGhostReturn(m_ghosts, new Blinky(pos, m_tileSize, m_pathFinder)));
                     break;
                 case PINKY_CHAR:
                     m_movableEntities.addEntity(addGhostReturn(m_ghosts, new Pinky(pos, m_tileSize, m_pathFinder)));
@@ -50,19 +51,31 @@ void GameHandler::loadLevel() {
     if (m_player == nullptr) {
         throw MissingPlayerException(QString("no player could be created: PLAYER_CHAR '%1' not found in level data").arg(PLAYER_CHAR));
     }
+    qDebug() <<"m_numPellets: " << m_numPellets;
 }
 
 QVector<EntityType> GameHandler::getCollisions(Entity *entity) {
+    // note: this triggers for normal but also "probing collisions"
+    // (the ones the movement system uses to evaluate if a move is valid)
+    // I go around this by processing the probing collisions as if they happened for real
     QVector<EntityType> collisions;
+    QVector<Entity*> entitiesToRemove;
     for (auto other : m_staticEntities) {
         if (other != entity && other->collidesWithItem(entity)) {
             collisions.push_back(other->getType());
             other->processCollision(entity->getType());
         }
+        if (other->isForRemoval()) {
+            entitiesToRemove.push_back(other);
+        }
     }
-    for (auto other : m_movableEntities) {
-        if (entity != other && other->collidesWithItem(entity)) {
+    for (auto entityToRemove : entitiesToRemove) {
+        m_staticEntities.removeEntity(entityToRemove);
+    }
+    for (auto other : m_movableEntities) { // none of the movables are ever for removal
+        if (other != entity && other->collidesWithItem(entity)) {
             collisions.push_back(other->getType());
+            other->processCollision(entity->getType());
         }
     }
     return collisions;
@@ -160,7 +173,7 @@ QGraphicsView *GameHandler::buildView(QGraphicsScene *scene) {
     return m_view;
 }
 
-void GameHandler::drawPath(const QColor &color) {
+[[maybe_unused]] void GameHandler::drawPath(const QColor &color) {
     QVector<QPoint>& path = m_pathFinder.getPath();
     for (auto& point : path) {
         QGraphicsEllipseItem* ellipse = m_scene->addEllipse(point.x() * m_tileSize + m_tileSize / 2 - m_tileSize / 16,
@@ -171,11 +184,22 @@ void GameHandler::drawPath(const QColor &color) {
     }
 }
 
-void GameHandler::resetDrawnPath() {
+[[maybe_unused]] void GameHandler::resetDrawnPath() {
     for (auto ellipse : m_pathEllipses) {
         m_scene->removeItem(ellipse);
         delete ellipse;
     }
     m_pathEllipses.clear();
+}
+
+void GameHandler::spawnRandomExtraPellet() {
+    // doesn't count towards total pellet count
+    QPoint pos = {QRandomGenerator::global()->bounded(m_levelData.width), QRandomGenerator::global()->bounded(m_levelData.height)};
+    while (m_levelData.tiles[pos.y()][pos.x()] != AIR_CHAR) {
+        pos = {QRandomGenerator::global()->bounded(m_levelData.width), QRandomGenerator::global()->bounded(m_levelData.height)};
+    }
+    auto* pellet = new Pellet(pos, m_tileSize);
+    m_staticEntities.addEntity(pellet);
+    m_scene->addItem(pellet);
 }
 

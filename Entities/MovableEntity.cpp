@@ -1,7 +1,8 @@
 #include "MovableEntity.h"
 
-bool MovableEntity::isHardColliding(QVector<EntityType> &collisions) {
+bool MovableEntity::checkForHardCollisionAndProcess(QVector<EntityType> &collisions) {
     for (EntityType type: collisions){
+        processCollision(type);
         if (hardCollisionEntities.contains(type)) {
             return true;
         }
@@ -9,30 +10,28 @@ bool MovableEntity::isHardColliding(QVector<EntityType> &collisions) {
     return false;
 }
 
-QVector<EntityType> MovableEntity::processGoingStraight(const std::function<QVector<EntityType>(Entity *)> &getCollisions) {
+void MovableEntity::processGoingStraight(const std::function<QVector<EntityType>(Entity *)> &getCollisions) {
     m_requestedPos = m_currentPos + m_velocity;
     setPos(m_requestedPos);
     auto collisions = getCollisions(this);
-    if (isHardColliding(collisions)) { // old velocity is blocked
+    if (checkForHardCollisionAndProcess(collisions)) { // old velocity is blocked
         setPos(m_currentPos);
         m_isBlocked = true;
     } else { // flying freely
         m_currentPos = m_requestedPos;
         m_isBlocked = false;
     }
-    return collisions;
 }
 
-QVector<EntityType>
-MovableEntity::processVelocityChange(const std::function<QVector<EntityType>(Entity *)> &getCollisions) {
+void MovableEntity::processVelocityChange(const std::function<QVector<EntityType>(Entity *)> &getCollisions) {
     m_requestedPos = m_currentPos + m_newVelocity;
     setPos(m_requestedPos);
     auto collisions = getCollisions(this);
-    if (isHardColliding(collisions)) { // new velocity is blocked
+    if (checkForHardCollisionAndProcess(collisions)) { // new velocity is blocked
         m_requestedPos = m_currentPos + m_velocity;
         setPos(m_requestedPos);
         collisions = getCollisions(this);
-        if (isHardColliding(collisions)) { // old velocity is blocked too
+        if (checkForHardCollisionAndProcess(collisions)) { // old velocity is blocked too
             m_newVelocity = QPoint(0, 0);
             setPos(m_currentPos);
             m_isBlocked = true;
@@ -43,20 +42,15 @@ MovableEntity::processVelocityChange(const std::function<QVector<EntityType>(Ent
         m_velocity = m_newVelocity;
         m_newVelocity = QPoint(0, 0);
     }
-    return collisions;
 }
 
 void MovableEntity::processMovement(const std::function<QVector<EntityType>(Entity *)> &getCollisions) {
     prepareGeometryChange();
     m_currentPos = pos().toPoint();
-    QVector<EntityType> collisions;
     if (m_newVelocity == QPoint(0, 0)){ // no new velocity
-        collisions = processGoingStraight(getCollisions);
+        processGoingStraight(getCollisions);
     } else {
-        collisions = processVelocityChange(getCollisions);
-    }
-    for (EntityType type: collisions) {
-        processCollision(type);
+        processVelocityChange(getCollisions);
     }
 }
 

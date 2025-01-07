@@ -15,11 +15,11 @@ public:
 
     QPoint getDirection() const { return direction; }
 
-    bool isHardColliding(QVector<EntityType>& collisions);
+    bool checkForHardCollisionAndProcess(QVector<EntityType>& collisions);
 
-    QVector<EntityType> processGoingStraight(const std::function<QVector<EntityType>(Entity*)>& getCollisions);
+    void processGoingStraight(const std::function<QVector<EntityType>(Entity*)>& getCollisions);
 
-    QVector<EntityType> processVelocityChange(const std::function<QVector<EntityType>(Entity*)>& getCollisions);
+    void processVelocityChange(const std::function<QVector<EntityType>(Entity*)>& getCollisions);
 
     void processMovement(const std::function<QVector<EntityType>(Entity*)>& getCollisions) override;
 

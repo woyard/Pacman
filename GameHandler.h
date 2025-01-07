@@ -51,6 +51,8 @@ public:
         return std::max(m_levelData.highscore, m_player->getScore());
     }
 
+    void spawnRandomExtraPellet();
+
     QVector<EntityType> getCollisions(Entity* entity);
 
     QPoint getOpposite(QPoint pos) const { return {m_levelData.width - pos.x(), m_levelData.height - pos.y()}; }
@@ -61,9 +63,9 @@ public:
 
     void reloadLevel();
 
-    void resetDrawnPath();
+    [[maybe_unused]] void resetDrawnPath();
 
-    void drawPath(const QColor& color);
+    [[maybe_unused]] void drawPath(const QColor& color);
 
     QGraphicsScene* buildScene();
 
