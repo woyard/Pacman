@@ -4,29 +4,39 @@
 #include <QGraphicsScene>
 #include <QTimer>
 
-#include "Utilities/LevelFileManager.h"
+#include "LevelUtilities/LevelFileManager.h"
 #include "GameHandler.h"
 
-const int TILE_SIZE = 64;
-const int FRAME_RATE = 1000 / 60;
 
 int main(int argc, char *argv[]) {
+    int tileSize = 64;
+    if (argc > 1) {
+        tileSize = std::stoi(argv[1])*8;
+    }
+    int frameRate = 1000/60;
+    if (argc > 2 && std::stoi(argv[2]) > 0) {
+        frameRate = 1000/std::stoi(argv[2]);
+    }
+    QString filename = "debug_16x16.txt";
+    if (argc > 3) {
+        filename = argv[3];
+    }
     QApplication a(argc, argv);
 
-    LevelFileManager level("test_level_32x16.txt");
+    LevelFileManager level(filename);
 
-    GameHandler gameHandler(level.getData(), TILE_SIZE);
+    GameHandler gameHandler(level.getData(), tileSize);
 
     QGraphicsScene *scene = gameHandler.buildScene();
 
-    //auto *preview = level.createFilePreview(TILE_SIZE);
+    //auto *preview = level.createFilePreview(tileSize);
     //scene.addItem(preview);
 
     QGraphicsView* view = gameHandler.buildView(scene);
 
     QTimer timer;
     QObject::connect(&timer, &QTimer::timeout, [&gameHandler]() { gameHandler.update(); });
-    timer.start(FRAME_RATE);
+    timer.start(frameRate);
     QObject::connect(&a, &QApplication::aboutToQuit, [&level, &gameHandler]() { level.saveToFile(gameHandler.getHighscore());});
     view->show();
     return a.exec();
