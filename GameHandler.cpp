@@ -77,7 +77,6 @@ void GameHandler::updateGhosts() {
         }
         if (m_player->getEatenPellets() > m_numPellets*ghost->getAggression()) {
             ghost->aggrivate();
-            qDebug()<<"Aggrivated";
         }
         ghost->processPathFinding(playerPosition, getOpposite(playerPosition), playerDirection, m_ghostRespawnPos);
     }
@@ -94,7 +93,7 @@ void GameHandler::update() {
     updateGhosts();
     m_player->tickPowerUpTimer();
     if (m_player->getLives() <= 0) {
-        qDebug() << "Gamee Over!";
+        qDebug() << "Game Over!";
         qDebug() << "You scored: " << m_player->getScore();
         QCoreApplication::quit();
     } else if (m_player->getEatenPellets() >= m_numPellets) {
