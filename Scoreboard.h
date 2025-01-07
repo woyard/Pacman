@@ -16,7 +16,7 @@ public:
         painter->setBrush(Qt::darkBlue);
         painter->drawRect(boundingRect());
         QFont font = painter->font();
-        font.setPointSize(32); // Set the desired font size
+        font.setPointSize(m_size.x() / 64);
         painter->setFont(font);
         painter->setPen(Qt::white);
         painter->drawText(m_size.x()/8, m_size.y()/3, m_textScore);
