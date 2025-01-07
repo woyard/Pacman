@@ -25,6 +25,12 @@ public:
 
     virtual void processCollision(EntityType other) = 0;
 
+    virtual void processCollisions(const std::function<QVector<EntityType>(Entity*)>& getCollisions) {
+        for (EntityType type : getCollisions(this)) {
+            processCollision(type);
+        }
+    }
+
     virtual void processMovement(const std::function<QVector<EntityType>(Entity*)>& getCollisions) {}
 
     virtual void checkForOutOfBounds(QPoint levelSize) {}
@@ -44,7 +50,7 @@ public:
 
     bool getIsDead() const { return isDead; }
 
-    void addDeathCallback(std::function<void(Entity*)> callback) {
+    void addDeathCallback(const std::function<void(Entity*)>& callback) {
         deathCallbacks.push_back(callback);
     }
 
