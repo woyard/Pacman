@@ -1,7 +1,7 @@
 #pragma once
 #include <QDebug>
 #include "Entity.h"
-#include "../Utilities/LevelData.h"
+#include "../LevelUtilities/LevelData.h"
 
 #define MOVABLE_ENTITY_DEFAULT_STEPS_PER_TILE 8
 

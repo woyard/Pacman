@@ -2,8 +2,8 @@
 
 #include <QBitmap>
 #include "../Entity.h"
-#include "../../Utilities/LevelData.h"
-#include "../../Utilities/tile_definitions.h"
+#include "../../LevelUtilities/LevelData.h"
+#include "../../LevelUtilities/tile_definitions.h"
 
 class MazeWalls : public Entity {
 public:
