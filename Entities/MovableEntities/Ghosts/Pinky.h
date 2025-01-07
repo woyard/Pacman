@@ -14,19 +14,15 @@ public:
                 case GhostState::CHASE:
                     getAndFollowPath(playerPosition + playerDirection * 6);
                     break;
-                case GhostState::SCARED:
+                case GhostState::SCARED_FLEEING:
                     getAndFollowPath(oppositePlayerPosition);
                     break;
                 case GhostState::DEAD:
-                    if (arePointsClose(getGridPos(), m_originalPos)) {
-                        setPos(m_originalPos * m_tileSize);
-                        setVelocity(QPoint(0, 0));
-                    } else {
-                        getAndFollowPath(m_originalPos);
-                    }
+                    processPostMortemBehaviour();
                     break;
                 case GhostState::IDLE:
-                    setVelocity(playerDirection);
+                case GhostState::SCARED_IDLE:
+                    setVelocity(playerDirection*(-1));
                     break;
                 default:
                     break;

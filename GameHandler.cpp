@@ -23,7 +23,7 @@ void GameHandler::loadLevel() {
                     m_movableEntities.addEntity(m_player = new Player(pos, m_tileSize));
                     break;
                 case BLINKY_CHAR:
-                    m_movableEntities.addEntity(addGhostReturn(m_ghosts, new Blinky(pos, m_tileSize, m_pathFinder)));
+                        m_movableEntities.addEntity(addGhostReturn(m_ghosts, new Blinky(pos, m_tileSize, m_pathFinder)));
                     break;
                 case PINKY_CHAR:
                     m_movableEntities.addEntity(addGhostReturn(m_ghosts, new Pinky(pos, m_tileSize, m_pathFinder)));
@@ -48,8 +48,7 @@ void GameHandler::loadLevel() {
         }
     }
     if (m_player == nullptr) {
-        qDebug() << "No player found in level data!";
-        exit(1);
+        throw MissingPlayerException(QString("no player could be created: PLAYER_CHAR '%1' not found in level data").arg(PLAYER_CHAR));
     }
 }
 
@@ -113,6 +112,8 @@ void GameHandler::update() {
 }
 
 void GameHandler::reloadLevel() {
+    int playerScore = m_player->getScore();
+    int playerLives = m_player->getLives();
     if (m_scene!= nullptr){
         for (auto item : m_scene->items()) {
             m_scene->removeItem(item);
@@ -126,6 +127,8 @@ void GameHandler::reloadLevel() {
     m_player = nullptr;
     m_mazeWalls = nullptr;
     loadLevel();
+    if (m_player == nullptr) {throw MissingPlayerException("this should never be thrown");}
+    m_player->setGameData(playerScore, playerLives);
     buildScene();
     buildView(m_scene);
 }

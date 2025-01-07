@@ -10,7 +10,8 @@ public:
     enum class GhostState {
         IDLE,
         CHASE,
-        SCARED,
+        SCARED_FLEEING,
+        SCARED_IDLE,
         DEAD
     };
     enum class GhostName {
@@ -48,7 +49,7 @@ public:
 
     void setGhostState(GhostState state);
 
-    const QVector<char> getColliderChars();
+    QVector<char> getColliderChars();
 
     void tickDeathTimer();
 
@@ -57,6 +58,8 @@ public:
     void processCollision(EntityType other) override;
 
     QPoint calculateNewVelocity(QPoint nextTile);
+
+    void processPostMortemBehaviour();
 
     void getAndFollowPath(QPoint destination);
 
@@ -68,8 +71,9 @@ public:
 
 
     void scare() {
-        if (m_state == GhostState::DEAD) { return; }
-        setGhostState(GhostState::SCARED);
+        if (m_state == GhostState::IDLE || m_state == GhostState::CHASE) {
+            setGhostState(GhostState::SCARED_FLEEING);
+        }
     }
 
     void relax() {
@@ -78,13 +82,14 @@ public:
     }
 
     void aggravate() {
-        if (m_state == GhostState::DEAD || m_state == GhostState::SCARED) { return; }
+        if (m_state != GhostState::IDLE) { return; }
         setGhostState(GhostState::CHASE);
     }
 
     void give_up() {
-        if (m_state == GhostState::DEAD || m_state == GhostState::SCARED) { return; }
-        setGhostState(GhostState::IDLE);
+        if (m_state == GhostState::SCARED_FLEEING) {
+            setGhostState(GhostState::SCARED_IDLE);
+        }
     }
 
     QRectF boundingRect() const override {
