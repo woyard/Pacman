@@ -4,13 +4,12 @@
 #include <QGraphicsPixmapItem>
 #include <QPainter>
 
-#include "Utilities/LevelData.h"
-#include "Utilities/tile_definitions.h"
-
+#include "../LevelUtilities/LevelData.h"
 
 class PathFinder {
 private:
     const LevelData &m_levelData;
+    QVector<char> m_colliderChars = {};
     QPoint m_start;
     QPoint m_end;
     QVector<QPoint> m_path;
@@ -36,7 +35,7 @@ private:
     QVector<QPoint> getNeighbours(QPoint pos) const;
 
     bool isBlocked(QPoint pos) const {
-        return m_levelData.tiles[pos.y()][pos.x()] == WALL_CHAR;
+        return m_colliderChars.contains(m_levelData.tiles[pos.y()][pos.x()]);
     }
 
     int calculateH(QPoint pos) const {
@@ -56,6 +55,10 @@ public:
     }
 
     void clearState();
+
+    void setColliderChars(const QVector<char> colliderChars) {
+        m_colliderChars = colliderChars;
+    }
 
     void setWaypoints(QPoint start, QPoint end) {
         if (hasNewWaypoints || m_start != start || m_end != end) {
