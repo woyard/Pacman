@@ -1,6 +1,7 @@
 #pragma once
 #include "../MovableEntity.h"
-#include "../../PathFinder.h"
+#include "../../PathFinder/PathFinder.h"
+#include "../../LevelUtilities/tile_definitions.h"
 #include <QDebug>
 #include <utility>
 
@@ -47,6 +48,8 @@ public:
 
     void setGhostState(GhostState state);
 
+    const QVector<char> getColliderChars();
+
     void tickDeathTimer();
 
     void teleportHome();
@@ -74,9 +77,14 @@ public:
         setGhostState(GhostState::IDLE);
     }
 
-    void aggrivate() {
+    void aggravate() {
         if (m_state == GhostState::DEAD || m_state == GhostState::SCARED) { return; }
         setGhostState(GhostState::CHASE);
+    }
+
+    void give_up() {
+        if (m_state == GhostState::DEAD || m_state == GhostState::SCARED) { return; }
+        setGhostState(GhostState::IDLE);
     }
 
     QRectF boundingRect() const override {

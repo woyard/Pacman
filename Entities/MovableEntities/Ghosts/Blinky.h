@@ -9,13 +9,13 @@ public:
         m_aggression = 0.0;
     }
 
-    void processPathFinding(QPoint playerPosition, QPoint oppositePlayerPosition, QPoint playerDirection, QPoint m_ghostRespawnPos){
+    void processPathFinding(QPoint playerPosition, QPoint oppositePlayerPosition, QPoint playerDirection, QPoint ghostRespawnPos) override{
             switch (m_state) {
                 case GhostState::CHASE:
                     getAndFollowPath(playerPosition);
                     break;
                 case GhostState::SCARED:
-                    getAndFollowPath(m_originalPos);
+                    getAndFollowPath(oppositePlayerPosition);
                     break;
                 case GhostState::DEAD:
                     if (arePointsClose(getGridPos(), m_originalPos)) {
@@ -25,7 +25,7 @@ public:
                         getAndFollowPath(m_originalPos);
                     }
                 case GhostState::IDLE:
-                    getAndFollowPath(oppositePlayerPosition);
+                    setVelocity(playerDirection);
                     break;
                 default:
                     break;

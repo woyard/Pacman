@@ -9,22 +9,24 @@ public:
         m_aggression = 0.125;
     }
 
-    void processPathFinding(QPoint playerPosition, QPoint oppositePlayerPosition, QPoint playerDirection, QPoint m_ghostRespawnPos){
+    void processPathFinding(QPoint playerPosition, QPoint oppositePlayerPosition, QPoint playerDirection, QPoint ghostRespawnPos) override{
             switch (m_state) {
                 case GhostState::CHASE:
                     getAndFollowPath(oppositePlayerPosition);
                     break;
                 case GhostState::SCARED:
-                    getAndFollowPath(playerPosition);
+                    getAndFollowPath(ghostRespawnPos);
                     break;
                 case GhostState::DEAD:
-                case GhostState::IDLE:
                     if (arePointsClose(getGridPos(), m_originalPos)) {
                         setPos(m_originalPos * m_tileSize);
                         setVelocity(QPoint(0, 0));
                     } else {
                         getAndFollowPath(m_originalPos);
                     }
+                    break;
+                case GhostState::IDLE:
+                    setVelocity(playerDirection);
                     break;
                 default:
                     break;

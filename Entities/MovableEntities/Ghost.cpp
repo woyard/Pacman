@@ -13,7 +13,12 @@ void Ghost::getAndFollowPath(QPoint destination) {
     bool hasNewPath = false;
     if (m_path.empty()) {
         m_pathFinder.setWaypoints(getGridPos(), destination);
+        m_pathFinder.setColliderChars(getColliderChars());
         m_path = m_pathFinder.getPath();
+        if (m_path.empty()) {
+            setGhostState(GhostState::IDLE);
+            return;
+        }
         hasNewPath = true;
     }
     if ((m_nextPos == getGridPos() && m_lastPos != getGridPos()) || hasNewPath) {
@@ -53,6 +58,17 @@ void Ghost::setGhostState(Ghost::GhostState state) {
     }
     m_state = state;
 }
+
+const QVector<char> Ghost::getColliderChars() {
+    switch (m_state) {
+        case GhostState::CHASE:
+        case GhostState::DEAD:
+            return {WALL_CHAR};
+        default:
+            return {WALL_CHAR, DOOR_CHAR};
+    }
+}
+
 
 void Ghost::tickDeathTimer() {
     if (m_state == GhostState::DEAD) {
@@ -97,4 +113,3 @@ void Ghost::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     }
     painter->drawRect(0, 0, m_tileSize, m_tileSize);
 }
-
