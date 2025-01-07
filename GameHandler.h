@@ -4,10 +4,10 @@
 #include <QGraphicsView>
 
 #include "Entities/Entity.h"
-#include "Utilities/LevelData.h"
-#include "Utilities/tile_definitions.h"
-#include "Scoreboard.h"
-#include "PathFinder.h"
+#include "LevelUtilities/LevelData.h"
+#include "LevelUtilities/tile_definitions.h"
+#include "Entities/Scoreboard.h"
+#include "PathFinder/PathFinder.h"
 #include "Entities/MovableEntities/Player.h"
 #include "Entities/MovableEntities/Ghost.h"
 #include "Entities/StaticEntities/Door.h"
@@ -33,7 +33,7 @@ private:
     Player *m_player = nullptr;
     QVector<Ghost*> m_ghosts;
     MazeWalls *m_mazeWalls = nullptr;
-    QPoint m_ghostRespawnPos;
+    QPoint m_ghostRespawnPos = QPoint(0, 0);
 
 public:
     GameHandler(const LevelData &levelData, int tileSize) :
