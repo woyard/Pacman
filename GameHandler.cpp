@@ -47,6 +47,10 @@ void GameHandler::loadLevel() {
             }
         }
     }
+    if (m_player == nullptr) {
+        qDebug() << "No player found in level data!";
+        exit(1);
+    }
 }
 
 QVector<EntityType> GameHandler::getCollisions(Entity *entity) {
@@ -76,7 +80,7 @@ void GameHandler::updateGhosts() {
             ghost->relax();
         }
         if (m_player->getEatenPellets() > m_numPellets*ghost->getAggression()) {
-            ghost->aggrivate();
+            ghost->aggravate();
         }
         ghost->processPathFinding(playerPosition, getOpposite(playerPosition), playerDirection, m_ghostRespawnPos);
     }
@@ -88,8 +92,6 @@ void GameHandler::update() {
         entity->checkForOutOfBounds(m_levelData.getDimensions());
     }
     m_scoreboard.updateScore(m_player->getScore(), m_player->getLives(), getHighscore());
-    resetDrawnPath();
-    drawPath(Qt::yellow);
     updateGhosts();
     m_player->tickPowerUpTimer();
     if (m_player->getLives() <= 0) {
@@ -111,10 +113,18 @@ void GameHandler::update() {
 }
 
 void GameHandler::reloadLevel() {
+    if (m_scene!= nullptr){
+        for (auto item : m_scene->items()) {
+            m_scene->removeItem(item);
+        }
+    }
     m_staticEntities.clearEntities();
     m_movableEntities.clearEntities();
     m_pathFinder.clearState();
     m_numPellets = 0;
+    m_ghosts.clear();
+    m_player = nullptr;
+    m_mazeWalls = nullptr;
     loadLevel();
     buildScene();
     buildView(m_scene);
