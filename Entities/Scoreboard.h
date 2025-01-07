@@ -19,8 +19,8 @@ public:
         font.setPointSize(m_size.x() / 64);
         painter->setFont(font);
         painter->setPen(Qt::white);
-        painter->drawText(m_size.x()/8, m_size.y()/3, m_textScore);
-        painter->drawText(m_size.x()/4, m_size.y()/3, m_textHighscore);
+        painter->drawText(m_size.x()/10, m_size.y()/3, m_textScore);
+        painter->drawText(m_size.x()/3, m_size.y()/3, m_textHighscore);
         painter->drawText(m_size.x()/3*2, m_size.y()/3, m_textLives);
 
     }

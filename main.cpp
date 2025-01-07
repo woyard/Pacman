@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
     if (argc > 2 && std::stoi(argv[2]) > 0) {
         frameRate = 1000/std::stoi(argv[2]);
     }
-    QString filename = "debug_16x16.txt";
+    QString filename = "level_16x16.txt";
     if (argc > 3) {
         filename = argv[3];
     }
