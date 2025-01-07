@@ -2,12 +2,13 @@
 #include <QString>
 #include <QGraphicsScene>
 #include <exception>
+#include <utility>
 
 #include "LevelData.h"
 
 class LevelFileManager {
 public:
-    LevelFileManager(const QString &filename) : m_filename(filename) {
+    explicit LevelFileManager(QString filename) : m_filename(std::move(filename)) {
         loadFromFile();
     }
     void loadFromFile();

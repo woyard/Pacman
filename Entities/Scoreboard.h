@@ -6,7 +6,7 @@
 
 class Scoreboard : public QGraphicsItem {
 public:
-    Scoreboard(QPoint size) : m_size(size) {}
+    explicit Scoreboard(QPoint size) : m_size(size) {}
 
     QRectF boundingRect() const override {
         return QRectF(0, 0, m_size.x(), m_size.y());

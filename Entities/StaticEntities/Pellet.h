@@ -16,7 +16,7 @@ public:
     }
 
     QRectF boundingRect() const override {
-        return QRectF(m_tileSize / 4, m_tileSize / 4, m_tileSize / 2, m_tileSize / 2);
+        return QRect(m_tileSize / 4, m_tileSize / 4, m_tileSize / 2, m_tileSize / 2);
     }
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override {
