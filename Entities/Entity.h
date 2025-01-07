@@ -48,27 +48,17 @@ public:
         return pos().toPoint() / m_tileSize;
     }
 
-    bool getIsDead() const { return isDead; }
+    bool isForRemoval() const { return m_isForRemoval; }
 
-    void addDeathCallback(const std::function<void(Entity*)>& callback) {
-        deathCallbacks.push_back(callback);
-    }
-
-    void kill() {
-        isDead = true;
-        for (const auto& callback : deathCallbacks) {
-            callback(this);
-        }
-        delete this;
+    void markForRemoval() {
+        m_isForRemoval = true;
     }
 
 protected:
     int m_tileSize;
 private:
-    bool isDead = false;
-    QVector<std::function<void(Entity*)>> deathCallbacks;
+    bool m_isForRemoval = false;
 };
-
 
 class EntityVector : private QVector<Entity*> {
 public:
@@ -82,14 +72,11 @@ public:
 
     void addEntity(Entity* entity) {
         push_back(entity);
-        entity->addDeathCallback([this](Entity* entity) { removeEntity(entity); });
     }
 
     void removeEntity(Entity* entity) {
         removeOne(entity);
-        if (!entity->getIsDead()) {
-            delete entity;
-        }
+        delete entity;
     }
 
     void clearEntities() {

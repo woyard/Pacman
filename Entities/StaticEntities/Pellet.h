@@ -10,8 +10,7 @@ public:
 
     void processCollision(EntityType other) override {
         if (other == EntityType::PLAYER) {
-            //qDebug() << "Pellet collided with a player!";
-            this->kill();
+            this->markForRemoval();
         }
     }
 

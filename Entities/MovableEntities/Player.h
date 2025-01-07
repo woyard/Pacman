@@ -38,6 +38,7 @@ public:
             case EntityType::PELLET:
                 m_score += 10;
                 m_eatenPellets++;
+                qDebug() << "Player pellets: " << m_eatenPellets;
                 break;
             case EntityType::POWERUP:
                 m_powerUpTimer = 200;
