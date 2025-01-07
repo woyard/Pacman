@@ -18,9 +18,9 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 add_executable(Pacman main.cpp
         Entities/Entity.h
         Entities/Entity.h
-        Utilities/LevelFileManager.cpp
-        Utilities/LevelFileManager.h
-        Utilities/tile_definitions.h
+        LevelUtilities/LevelFileManager.cpp
+        LevelUtilities/LevelFileManager.h
+        LevelUtilities/tile_definitions.h
         Entities/MovableEntity.cpp
         Entities/MovableEntity.h
         Entities/MovableEntities/Player.cpp
@@ -28,14 +28,14 @@ add_executable(Pacman main.cpp
         Entities/MovableEntities/Ghost.cpp
         Entities/MovableEntities/Ghost.h
         Entities/StaticEntities/Pellet.h
-        Utilities/LevelData.h
+        LevelUtilities/LevelData.h
         Entities/StaticEntities/MazeWalls.h
         GameHandler.cpp
         GameHandler.h
         Entities/StaticEntities/Door.h
-        Scoreboard.h
-        PathFinder.cpp
-        PathFinder.h
+        Entities/Scoreboard.h
+        PathFinder/PathFinder.cpp
+        PathFinder/PathFinder.h
         Entities/StaticEntities/Powerup.h
         Entities/MovableEntities/Ghosts/Blinky.h
         Entities/MovableEntities/Ghosts/Clyde.h
