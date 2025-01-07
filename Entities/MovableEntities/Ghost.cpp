@@ -72,7 +72,6 @@ void Ghost::setGhostState(Ghost::GhostState state) {
 QVector<char> Ghost::getColliderChars() {
     switch (m_state) {
         case GhostState::CHASE:
-            return {WALL_CHAR};
         case GhostState::DEAD:
             return {WALL_CHAR};
         default:
