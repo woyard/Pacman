@@ -10,6 +10,7 @@ implemented with C++ and Qt
 - my simple A* pathfinding engine
 - 4 ghost types running A* pathfinding with different strategies
 - .txt level files for easy level creation (I recommend https://asciiflow.com)
+- high score keeping integrated in level file
 - simple collision detection for all entities
 - easily extensible class system for adding new entities
 
