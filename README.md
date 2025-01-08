@@ -17,8 +17,12 @@ implemented with C++ and Qt
 ### level1_32x16.txt preview:
 <img width="1021" alt="Snipaste_2025-01-07_17-37-49" src="https://github.com/user-attachments/assets/e9692b01-8c80-443c-8dcd-5171916ac4ae" />
 
-### Compilation & Running:
+### Compilation & Running (linux):
 ```bash
+# get Qt the 'canonical way':
+sudo apt install qt5-default
+# but for me something like that worked: sudo apt install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools
+git clone https://github.com/woyard/Pacman
 cd YOUR_PATH/Pacman
 cmake .
 make
