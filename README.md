@@ -13,6 +13,9 @@ implemented with C++ and Qt
 - simple collision detection for all entities
 - easily extensible class system for adding new entities
 
+### level1_32x16.txt preview:
+<img width="1021" alt="Snipaste_2025-01-07_17-37-49" src="https://github.com/user-attachments/assets/e9692b01-8c80-443c-8dcd-5171916ac4ae" />
+
 ### Compilation & Running:
 ```bash
 cd YOUR_PATH/Pacman
