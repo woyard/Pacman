@@ -23,6 +23,7 @@ private:
     QGraphicsScene *m_scene = nullptr;
     QGraphicsView *m_view = nullptr;
     int m_tileSize;
+    bool m_pathFindingDebugOn;
     int m_numPellets = 0;
     Scoreboard m_scoreboard;
     PathFinder m_pathFinder;
@@ -36,9 +37,10 @@ private:
     QPoint m_ghostRespawnPos = QPoint(0, 0);
 
 public:
-    GameHandler(const LevelData &levelData, int tileSize) :
+    GameHandler(const LevelData &levelData, int tileSize, bool pathFindingDebugOn = false) :
     m_levelData(levelData),
     m_tileSize(tileSize),
+    m_pathFindingDebugOn(pathFindingDebugOn),
     m_scoreboard(QPoint(m_levelData.width * m_tileSize, m_tileSize * SCOREBOARD_TILE_HEIGHT)),
     m_pathFinder(levelData)
     {
@@ -63,9 +65,11 @@ public:
 
     void reloadLevel();
 
-    [[maybe_unused]] void resetDrawnPath();
+    void drawGhostPaths();
 
-    [[maybe_unused]] void drawPath(const QColor& color);
+    void drawPath(const QColor& color, const QVector<QPoint>& path);
+
+    void resetDrawnPaths();
 
     QGraphicsScene* buildScene();
 

@@ -51,6 +51,8 @@ public:
 
     QVector<char> getColliderChars();
 
+    const QVector<QPoint>& getPath() const {return m_path;}
+
     void tickDeathTimer();
 
     void teleportHome();
@@ -68,7 +70,6 @@ public:
     }
 
     virtual void processPathFinding(QPoint playerPosition, QPoint oppositePlayerPosition, QPoint playerDirection, QPoint m_ghostRespawnPos) = 0;
-
 
     void scare() {
         if (m_state == GhostState::IDLE || m_state == GhostState::CHASE) {

@@ -69,6 +69,9 @@ void Ghost::setGhostState(Ghost::GhostState state) {
     m_state = state;
 }
 
+/**
+ * @return a list of 'blocking' chars for pathfinding
+ */
 QVector<char> Ghost::getColliderChars() {
     switch (m_state) {
         case GhostState::CHASE:
@@ -78,7 +81,6 @@ QVector<char> Ghost::getColliderChars() {
             return {WALL_CHAR, DOOR_CHAR};
     }
 }
-
 
 void Ghost::tickDeathTimer() {
     if (m_state == GhostState::DEAD) {

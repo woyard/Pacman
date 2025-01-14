@@ -105,6 +105,10 @@ void GameHandler::update() {
     }
     m_scoreboard.updateScore(m_player->getScore(), m_player->getLives(), getHighscore());
     updateGhosts();
+    if (m_pathFindingDebugOn) {
+        resetDrawnPaths();
+        drawGhostPaths();
+    }
     m_player->tickPowerUpTimer();
     if (m_player->getLives() <= 0) {
         qDebug() << "Game Over!";
@@ -173,8 +177,13 @@ QGraphicsView *GameHandler::buildView(QGraphicsScene *scene) {
     return m_view;
 }
 
-[[maybe_unused]] void GameHandler::drawPath(const QColor &color) {
-    QVector<QPoint>& path = m_pathFinder.getPath();
+void GameHandler::drawGhostPaths(){
+    for (auto ghost : m_ghosts) {
+        drawPath(ghost->getColor(), ghost->getPath());
+    }
+}
+
+void GameHandler::drawPath(const QColor &color, const QVector<QPoint>& path){
     for (auto& point : path) {
         QGraphicsEllipseItem* ellipse = m_scene->addEllipse(point.x() * m_tileSize + m_tileSize / 2 - m_tileSize / 16,
                                                             point.y() * m_tileSize + m_tileSize / 2 - m_tileSize / 16,
@@ -184,7 +193,7 @@ QGraphicsView *GameHandler::buildView(QGraphicsScene *scene) {
     }
 }
 
-[[maybe_unused]] void GameHandler::resetDrawnPath() {
+void GameHandler::resetDrawnPaths() {
     for (auto ellipse : m_pathEllipses) {
         m_scene->removeItem(ellipse);
         delete ellipse;
