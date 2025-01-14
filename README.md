@@ -10,11 +10,19 @@ implemented with C++ and Qt
 - my simple A* pathfinding engine
 - 4 ghost types running A* pathfinding with different strategies
 - .txt level files for easy level creation (I recommend https://asciiflow.com)
+- high score keeping integrated in level file
 - simple collision detection for all entities
 - easily extensible class system for adding new entities
 
-### Compilation & Running:
+### level1_32x16.txt preview:
+<img width="1021" alt="Snipaste_2025-01-07_17-37-49" src="https://github.com/user-attachments/assets/e9692b01-8c80-443c-8dcd-5171916ac4ae" />
+
+### Compilation & Running (linux):
 ```bash
+# get Qt the 'canonical way':
+sudo apt install qt5-default
+# but for me something like that worked: sudo apt install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools
+git clone https://github.com/woyard/Pacman
 cd YOUR_PATH/Pacman
 cmake .
 make
