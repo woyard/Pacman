@@ -33,12 +33,11 @@ make
 arg1: int tileSize = 8
 arg2: int frameRate = 60
 arg3: string levelFile = "level1_32x16.txt"
-arg4: bool debugView = false
-
+arg4: bool debugView = 0
 ```
 ```bash
 
-./Pacman 8 60 "level1_32x16.txt"
+./Pacman 8 60 "level1_32x16.txt" 1
 ```
 ### Level File - Minimum Requirements:
 first row: 
