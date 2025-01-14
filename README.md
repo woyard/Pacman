@@ -25,6 +25,10 @@ make
 arg1: int tileSize = 8
 arg2: int frameRate = 60
 arg3: string levelFile = "level1_32x16.txt"
+arg4: bool debugView = false
+
+```
+```bash
 
 ./Pacman 8 60 "level1_32x16.txt"
 ```
