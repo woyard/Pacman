@@ -21,11 +21,16 @@ int main(int argc, char *argv[]) {
     if (argc > 3) {
         filename = argv[3];
     }
+    bool debug = false;
+    if (argc > 4 && std::stoi(argv[4]) > 0) {
+        debug = true;
+    }
+
     QApplication a(argc, argv);
 
     LevelFileManager level(filename);
 
-    GameHandler gameHandler(level.getData(), tileSize);
+    GameHandler gameHandler(level.getData(), tileSize, debug);
 
     QGraphicsScene *scene = gameHandler.buildScene();
 
